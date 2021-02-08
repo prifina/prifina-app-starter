@@ -1,6 +1,6 @@
 import React from "react";
-
-import { addDecorator, addParameters } from "@storybook/react";
+import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
+//import { addDecorator, addParameters } from "@storybook/react";
 //import { withInfo } from '@storybook/addon-info';
 
 //import { addParameters } from '@storybook/react';
@@ -32,3 +32,24 @@ const themeProviderDecorator = (story) => (
 
 addDecorator(themeProviderDecorator);
 */
+
+/*
+const customViewports = {
+  iPhoneX: {
+    name: "iPhone X",
+    styles: {
+      width: "375px",
+      height: "812px",
+    },
+  },
+};
+*/
+export const parameters = {
+  actions: { argTypesRegex: "^on[A-Z].*" },
+  viewport: {
+    viewports: {
+      ...INITIAL_VIEWPORTS,
+      /* ...customViewports, */
+    },
+  },
+};

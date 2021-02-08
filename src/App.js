@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { ReactComponent as Logo } from "./assets/prifina.svg";
 import Image from "./assets/fingerpori.png";
 
+import { usePrifina } from "@prifina/hooks";
+
 const StyledBox = styled.div`
   height: 100vh;
 
@@ -22,6 +24,9 @@ const StyledSVG = styled(Logo)`
 `;
 
 export const App = () => {
+  const { currentUser, check } = usePrifina({});
+  console.log(currentUser);
+
   return (
     <StyledBox>
       <div style={{ textAlign: "center" }}>
@@ -39,7 +44,7 @@ export const App = () => {
           fontFamily: "Open Sans",
         }}
       >
-        Hello!
+        Hello! {currentUser.name}
       </div>
     </StyledBox>
   );
