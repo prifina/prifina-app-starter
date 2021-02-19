@@ -106,9 +106,7 @@ Please don't build a *react app*. It will not work. So no create-react-app pleas
 # Further Resources
 
 https://dev.prifina.com/
-
 https://docs.prifina.com/
-
 https://www.prifina.com/
 
 
