@@ -1,6 +1,6 @@
 # Build with Starter
 
-Build a Prifina app with the Prifina Starter. 
+Build a Prifina app with the Prifina Starter and utilities. 
 
 # Test with Launcher
 

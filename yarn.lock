@@ -1305,6 +1305,19 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.6.0.tgz#f022195afdfc942e088ee2101285a1d31c7d727f"
   integrity sha512-cPqjjzuFWNK3BSKLm0abspP0sp/IGOli4p5I5fKFAzdS8fvjdOwDCfZqAaIiXd9lPkOWi3SUUfZof3hEb7J/uw==
 
+"@prifina/faker@latest":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@prifina/faker/-/faker-0.0.4.tgz#2bf77051f391d8cb5a0e41c9b33113944ea697f7"
+  integrity sha512-vYr1cjf35/LSa6XgaYP7iNGhf8YZVG/QGC/nPP/g+3kcH/vD2rIndWg88bcDJhSwGykVwukTt/yvp68i6wghjg==
+  dependencies:
+    "@prifina/hooks" "^0.0.8"
+    faker "^5.4.0"
+
+"@prifina/hooks@^0.0.8", "@prifina/hooks@latest":
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/@prifina/hooks/-/hooks-0.0.8.tgz#b80374e7248adb4e1494558064863e91d76f34a9"
+  integrity sha512-lyI+voMVMfQnEblAUPph31l0/oyU3O0Tr0QLFXw7D8z0IRoozQt2BhlTHv2PLsjP651be1jpwjOpN1y5vx2Cqg==
+
 "@reach/router@^1.3.3":
   version "1.3.4"
   resolved "https://registry.yarnpkg.com/@reach/router/-/router-1.3.4.tgz#d2574b19370a70c80480ed91f3da840136d10f8c"
@@ -1431,6 +1444,23 @@
     qs "^6.6.0"
     regenerator-runtime "^0.13.7"
     ts-dedent "^2.0.0"
+
+"@storybook/addon-viewport@^6.1.17":
+  version "6.1.17"
+  resolved "https://registry.yarnpkg.com/@storybook/addon-viewport/-/addon-viewport-6.1.17.tgz#c312ddb9905bc76d200139b19c8c8a1b8669f5f0"
+  integrity sha512-vBtJ4o0XWSPIqhJRroo/hUjRUOVYOVP8kGXv9WDRS75988BTHDq75VAKLmdNN/MV8kBaANRppj9LdRw2Mxs5TA==
+  dependencies:
+    "@storybook/addons" "6.1.17"
+    "@storybook/api" "6.1.17"
+    "@storybook/client-logger" "6.1.17"
+    "@storybook/components" "6.1.17"
+    "@storybook/core-events" "6.1.17"
+    "@storybook/theming" "6.1.17"
+    core-js "^3.0.1"
+    global "^4.3.2"
+    memoizerific "^1.11.3"
+    prop-types "^15.7.2"
+    regenerator-runtime "^0.13.7"
 
 "@storybook/addons@6.1.17", "@storybook/addons@^6.1.17":
   version "6.1.17"
@@ -5204,6 +5234,11 @@ extglob@^2.0.4:
     regex-not "^1.0.0"
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
+
+faker@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-5.4.0.tgz#f18e55993c6887918182b003d163df14daeb3011"
+  integrity sha512-Y9n/Ky/xZx/Bj8DePvXspUYRtHl/rGQytoIT5LaxmNwSe3wWyOeOXb3lT6Dpipq240PVpeFaGKzScz/5fvff2g==
 
 fast-deep-equal@^3.1.1:
   version "3.1.3"

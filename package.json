@@ -12,10 +12,13 @@
     "@babel/preset-env": "^7.12.13",
     "@babel/preset-react": "^7.12.13",
     "@babel/runtime": "^7.12.13",
+    "@prifina/faker": "latest",
+    "@prifina/hooks": "latest",
     "@storybook/addon-actions": "^6.1.17",
     "@storybook/addon-docs": "^6.1.17",
     "@storybook/addon-knobs": "^6.1.17",
     "@storybook/addon-links": "^6.1.17",
+    "@storybook/addon-viewport": "^6.1.17",
     "@storybook/addons": "^6.1.17",
     "@storybook/react": "^6.1.17",
     "@svgr/webpack": "^5.5.0",
@@ -46,6 +49,8 @@
     "storybook": "start-storybook -p 9009 -s public"
   },
   "peerDependencies": {
+    "@prifina/faker": "latest",
+    "@prifina/hooks": "latest",
     "react": "^17.0.1",
     "styled-components": "^5.2.1",
     "styled-system": "^5.1.5"
