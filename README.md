@@ -1,3 +1,5 @@
+This README is a work-in-progress. Please check the issues to see if something has not already been flagged for review.
+
 # Build with Starter
 
 Build a Prifina app with the Prifina Starter and utilities. 
