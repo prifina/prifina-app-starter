@@ -1,5 +1,11 @@
 This README is a work-in-progress. Please check the issues to see if something has not already been flagged for review.
 
+# Getting Started
+
+The Prifina starter application is a **container app**. As a third-party developer, you will be downloading Prifina's pre-built libraries, assets, and components to then design and craft your own application to be hosted on Prifina's marketplace.
+
+*Warning:* Since our starter app is already built on React, there is no need to run `create-react-app`.
+
 # Build with Starter
 
 Build a Prifina app with the Prifina Starter and utilities. 
@@ -100,10 +106,6 @@ To get in touch with us you can join our [Slack](https://join.slack.com/t/prifin
 **Q**: I can't register as a developer. How do I get my appID?
 **A**: Get in touch with us on [Slack](https://join.slack.com/t/libertyequalitydata/shared_invite/zt-ddr4t974-MCzsch4FSeux8DrFQ2atbQ) to skip the line.
 
-
-# Disclaimer
-
-Please don't build a *react app*. It will not work. So no create-react-app please. 
 
 # Further Resources
 
