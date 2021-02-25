@@ -2,7 +2,7 @@ This README is a work-in-progress. Please check the issues to see if something h
 
 # Getting Started
 
-The Prifina app is a container application and this starter repository helps you develop apps within that platform. As a third-party developer, you will be downloading Prifina's pre-built libraries, assets, and components to then design and craft your own application to be hosted on Prifina's marketplace.
+The Prifina app is a container application and this starter repository helps you develop apps within that platform. As a third-party developer, you can download Prifina's pre-built libraries, assets, and components to then design and craft your own application to be hosted on Prifina's platform.
 
 *Warning:* Since our starter app is already built on React, there is no need to run `create-react-app`.
 
