@@ -34,7 +34,7 @@ In addition to data that your application is using, you should also think about 
 
 When you have decided the application you want to build and have the data sources identified, a simple way to start building is by simply forking the relevant GitHub [library](https://github.com/prifina) and start building your own app.
 
-You can also use these open source components from our Blend Design System library in our <a href="http://alpha.blend-ui.prifina.com/">Storybook</a>, and other useful assets from our <a href="https://github.com/prifina/blend-ui">GitHub</a>. 
+You can also use these open source components from our Blend Design System library in our [Storybook](http://alpha.blend-ui.prifina.com/), and other useful assets from our [GitHub](https://github.com/prifina/blend-ui). 
 
 You do not need to use these assets, but they can help get you started. 
 
@@ -92,7 +92,7 @@ The App Market has the following fields that need to be filled out to describe t
 - Support Contact
 
 ## Package Your Application
-To get your application published in our App Market, you will need to supply the Prifina team a .Zip build deployment package with the relevant <a href="https://web.dev/add-manifest/">manifest</a> file, to be reviewed by the Prifina App market team.
+To get your application published in our App Market, you will need to supply the Prifina team a .Zip build deployment package with the relevant [manifest](https://web.dev/add-manifest/) file, to be reviewed by the Prifina App market team.
 
 ## Get In Touch
 
