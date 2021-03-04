@@ -106,7 +106,7 @@ To get in touch with us you can join our [Slack](https://join.slack.com/t/prifin
 **Q**: Do you support any JavaScript frameworks aside from React?  
 **A**: We will gradually expand our support for other JavaScript libraries and frameworks. 
 
-**Q**: I can't register as a developer. How do I get my appID?
+**Q**: I can't register as a developer. How do I get my appID? 
 **A**: Get in touch with us on [Slack](https://join.slack.com/t/libertyequalitydata/shared_invite/zt-ddr4t974-MCzsch4FSeux8DrFQ2atbQ).
 
 
