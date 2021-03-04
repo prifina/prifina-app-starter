@@ -16,15 +16,15 @@ Test locally or use the [Prifina launcher](https://github.com/prifina/prifina-wi
 
 # TLDR
 
-Prifina provides a user-held data platform that allows you to build React applications that the user can install via our App Market and run them in their personal data clouds (AWS). These apps use <a href="https://reactjs.org/docs/components-and-props.html">props</a> or <a href="https://reactjs.org/docs/context.html">context providers</a> as the interface to connect with users personal data. 
+Prifina provides a user-held data platform that allows you to build React applications that the user can install via our App Market and run them in their personal data clouds (AWS). These apps use [props](https://reactjs.org/docs/components-and-props.html) or [context providers](https://reactjs.org/docs/context.html) as the interface to connect with users personal data. 
 
-To get your application published in our platform, you will need to supply the Prifina team an archive build deployment package with the relevant <a href="https://web.dev/add-manifest/">manifest</a> file, to be reviewed by the Prifina App market team. 
+To get your application published in our platform, you will need to supply the Prifina team an archive build deployment package with the relevant [manifest](https://web.dev/add-manifest/) file, to be reviewed by the Prifina App market team. 
 
 Your archive *must contain* a Prifina appID field in the manifest.js file. Wait to register as a developer to get an appID or contact one of our team on [Slack](https://join.slack.com/t/libertyequalitydata/shared_invite/zt-ddr4t974-MCzsch4FSeux8DrFQ2atbQ) to get ahead of the line.
 
 ## What Application to Build?
 
-If you are wondering what data is available to build your application on, you can download the type of data that the users have, from looking at the <a href="https://www.prifina.com/your-data.html">Prifina Your Data</a> page. We recommend that you simply download your own data from any of these platforms or identify any other sources that are most interesting to you.
+If you are wondering what data is available to build your application on, you can download the type of data that the users have, from looking at the [Prifina Your Data](https://www.prifina.com/your-data.html) page. We recommend that you simply download your own data from any of these platforms or identify any other sources that are most interesting to you.
 
 Probably the most interesting new type of applications can be built by mixing data from multiple different data sources and or combining those with public data sources, an example would be combining streaming data from personal data and utilizing it with publicly available movie/series data.
 
