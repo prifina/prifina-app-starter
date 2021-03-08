@@ -14,13 +14,13 @@ Build a Prifina app with the Prifina Starter and utilities.
 
 Test locally or use the [Prifina launcher](https://github.com/prifina/prifina-widgets-launcher) to test your code in the Prifina platform.
 
-# TLDR
+# How Prifina Works
 
-Prifina provides a user-held data platform that allows you to build React applications that the user can install via our App Market and run them in their personal data clouds (AWS). These apps use [props](https://reactjs.org/docs/components-and-props.html) or [context providers](https://reactjs.org/docs/context.html) as the interface to connect with users personal data. 
+As a third-party developer, you can design and create React applications that will be hosted on our user-held data platform which runs users' personal data clouds (hosted on AWS). In order for your app to interface with users' personal data, you'll want to use either [props](https://reactjs.org/docs/components-and-props.html) or [context providers](https://reactjs.org/docs/context.html).
 
-To get your application published in our platform, you will need to supply the Prifina team an archive build deployment package with the relevant [manifest](https://web.dev/add-manifest/) file, to be reviewed by the Prifina App market team. 
+In order to publish your app on our platform, we ask that you provide a [manifest](https://web.dev/add-manifest/) file that contains an archive of your build deployment package. Our Prifina platform team will review it for approval.
 
-Your archive *must contain* a Prifina appID field in the manifest.js file. Wait to register as a developer to get an appID or contact one of our team on [Slack](https://join.slack.com/t/libertyequalitydata/shared_invite/zt-ddr4t974-MCzsch4FSeux8DrFQ2atbQ) to get ahead of the line.
+The `manifest.js` file should have a Prifina `appID` field. Currently, registration for an `appID` can be requested in our public [Slack](https://join.slack.com/t/libertyequalitydata/shared_invite/zt-ddr4t974-MCzsch4FSeux8DrFQ2atbQ) workspace.
 
 ## What Application to Build?
 
