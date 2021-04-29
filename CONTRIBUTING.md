@@ -9,4 +9,4 @@ Hello, welcome to the Prifina Documentation ("Docs") team's contribution templat
 Our developer docs can be found [here](http://docs.prifina.com/quickstart/#introduction).
 
 # Got more questions?
-Connect with us on [Slack](https://join.slack.com/t/prifinadev/shared_invite/zt-8d8ynow6-UFwwICFyYmgT8L~juBsBUw) and/or email us at developer@prifina.com!
+Connect with us on [Slack](https://join.slack.com/t/prifinadev/shared_invite/zt-8d8ynow6-UFwwICFyYmgT8L~juBsBUw) or email us at developer@prifina.com
