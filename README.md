@@ -1,5 +1,9 @@
 This README is a work-in-progress. Please check the issues to see if something has not already been flagged for review.
 
+# Quickstart
+
+See [`QUICKSTART.md`](./QUICKSTART.md).
+
 # Getting Started
 
 The Prifina app is a container application and this starter repository helps you develop apps within that platform. As a third-party developer, you can download Prifina's pre-built libraries, assets, and components to then design and craft your own application to be hosted on Prifina's platform.
