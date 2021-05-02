@@ -27,6 +27,10 @@ The console should return a version number in the standard format of `x.xx.xx` (
 
 Run `yarn install`.
 
+First time installation will look like this:
+
+<img width="814" alt="Screen Shot 2021-05-01 at 8 01 12 PM" src="https://user-images.githubusercontent.com/27714199/116800679-2ff19d00-aab8-11eb-935c-1c331e57d502.png">
+
 **WARNING:** Running `yarn install` outside of the repo will result in the following message and generate a new lockfile in your current directory.
 
 <img width="269" alt="Screen Shot 2021-05-01 at 6 17 39 PM" src="https://user-images.githubusercontent.com/27714199/116798969-a9ce5a00-aaa9-11eb-89e8-cd59d6f80a1a.png">
