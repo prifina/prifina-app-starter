@@ -18,21 +18,17 @@ In order to publish your app on our platform, we ask that you provide a [manifes
 
 The `manifest.js` file should have a Prifina `appID` field. Currently, registration for an `appID` can be requested in our public [Slack](https://join.slack.com/t/libertyequalitydata/shared_invite/zt-ddr4t974-MCzsch4FSeux8DrFQ2atbQ) workspace.
 
-## What Application to Build?
+## Building Your Application
+
+An easy way to start building your application is to fork the relevant Prifina [repository](https://github.com/prifina). You can also use open-source components and assets located in our [Blend Design System](https://github.com/prifina/blend-ui) library or [Storybook](http://alpha.blend-ui.prifina.com/). You do not need to use these resources, but they are designed for learn best by building.
 
 If you are wondering what data is available to build your application on, you can download the type of data that the users have, from looking at the [Prifina Your Data](https://www.prifina.com/your-data.html) page. We recommend that you simply download your own data from any of these platforms or identify any other sources that are most interesting to you.
 
-Probably the most interesting new type of applications can be built by mixing data from multiple different data sources and or combining those with public data sources, an example would be combining streaming data from personal data and utilizing it with publicly available movie/series data.
+### Application Design Considerations
 
-In addition to data that your application is using, you should also think about new data that your application will be able to generate for the user, that will become a new data source for other applications.
+New kinds of applications can be built by mixing data from different data sources and/or combining them with public data sources: An example would be to combine a user's personal streaming data with publicly available movie/television review data.
 
-## How to Start?
-
-When you have decided the application you want to build and have the data sources identified, a simple way to start building is by simply forking the relevant GitHub [library](https://github.com/prifina) and start building your own app.
-
-You can also use these open source components from our Blend Design System library in our [Storybook](http://alpha.blend-ui.prifina.com/), and other useful assets from our [GitHub](https://github.com/prifina/blend-ui). 
-
-You do not need to use these assets, but they can help get you started. 
+In addition to data that your application is using, you might consider what sort of new data your application generates for users: This in and of itself becomes a new data source for other applications.
 
 ## Application Data Model
 
@@ -90,9 +86,6 @@ The App Market has the following fields that need to be filled out to describe t
 ## Package Your Application
 To get your application published in our App Market, you will need to supply the Prifina team a .Zip build deployment package with the relevant [manifest](https://web.dev/add-manifest/) file, to be reviewed by the Prifina App market team.
 
-
-
-
 # Build with Starter
 
 Build a Prifina app with the Prifina Starter and utilities. 
@@ -120,5 +113,3 @@ To reach us, you can join our [Slack](https://join.slack.com/t/prifinadev/shared
 https://dev.prifina.com/  
 https://docs.prifina.com/  
 https://www.prifina.com/
-
-
