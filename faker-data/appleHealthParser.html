@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE HealthData [ <!-- HealthKit Export Version: 11 -->
+<!ELEMENT HealthData (ExportDate,Me,(Record|Correlation|Workout|ActivitySummary|ClinicalRecord)*)>
+<!ATTLIST HealthData
+  locale CDATA #REQUIRED
+>
+<!ELEMENT ExportDate EMPTY>
+<!ATTLIST ExportDate
+  value CDATA #REQUIRED
+>
+<!ELEMENT Me EMPTY>
+<!ATTLIST Me
+  HKCharacteristicTypeIdentifierDateOfBirth         CDATA #REQUIRED
+  HKCharacteristicTypeIdentifierBiologicalSex       CDATA #REQUIRED
+  HKCharacteristicTypeIdentifierBloodType           CDATA #REQUIRED
+  HKCharacteristicTypeIdentifierFitzpatrickSkinType CDATA #REQUIRED
+>
+<!ELEMENT Record ((MetadataEntry|HeartRateVariabilityMetadataList)*)>
+<!ATTLIST Record
+  type          CDATA #REQUIRED
+  unit          CDATA #IMPLIED
+  value         CDATA #IMPLIED
+  sourceName    CDATA #REQUIRED
+  sourceVersion CDATA #IMPLIED
+  device        CDATA #IMPLIED
+  creationDate  CDATA #IMPLIED
+  startDate     CDATA #REQUIRED
+  endDate       CDATA #REQUIRED
+>
+<!-- Note: Any Records that appear as children of a correlation also appear as top-level records in this document. -->
+<!ELEMENT Correlation ((MetadataEntry|Record)*)>
+<!ATTLIST Correlation
+  type          CDATA #REQUIRED
+  sourceName    CDATA #REQUIRED
+  sourceVersion CDATA #IMPLIED
+  device        CDATA #IMPLIED
+  creationDate  CDATA #IMPLIED
+  startDate     CDATA #REQUIRED
+  endDate       CDATA #REQUIRED
+>
+<!ELEMENT Workout ((MetadataEntry|WorkoutEvent|WorkoutRoute)*)>
+<!ATTLIST Workout
+  workoutActivityType   CDATA #REQUIRED
+  duration              CDATA #IMPLIED
+  durationUnit          CDATA #IMPLIED
+  totalDistance         CDATA #IMPLIED
+  totalDistanceUnit     CDATA #IMPLIED
+  totalEnergyBurned     CDATA #IMPLIED
+  totalEnergyBurnedUnit CDATA #IMPLIED
+  sourceName            CDATA #REQUIRED
+  sourceVersion         CDATA #IMPLIED
+  device                CDATA #IMPLIED
+  creationDate          CDATA #IMPLIED
+  startDate             CDATA #REQUIRED
+  endDate               CDATA #REQUIRED
+>
+<!ELEMENT WorkoutEvent EMPTY>
+<!ATTLIST WorkoutEvent
+  type         CDATA #REQUIRED
+  date         CDATA #REQUIRED
+  duration     CDATA #IMPLIED
+  durationUnit CDATA #IMPLIED
+>
+<!ELEMENT WorkoutRoute ((MetadataEntry|FileReference)*)>
+<!ATTLIST WorkoutRoute
+  sourceName    CDATA #REQUIRED
+  sourceVersion CDATA #IMPLIED
+  device        CDATA #IMPLIED
+  creationDate  CDATA #IMPLIED
+  startDate     CDATA #REQUIRED
+  endDate       CDATA #REQUIRED
+>
+<!ELEMENT FileReference EMPTY>
+<!ATTLIST FileReference
+  path CDATA #REQUIRED
+>
+<!ELEMENT ActivitySummary EMPTY>
+<!ATTLIST ActivitySummary
+  dateComponents           CDATA #IMPLIED
+  activeEnergyBurned       CDATA #IMPLIED
+  activeEnergyBurnedGoal   CDATA #IMPLIED
+  activeEnergyBurnedUnit   CDATA #IMPLIED
+  appleMoveTime            CDATA #IMPLIED
+  appleMoveTimeGoal        CDATA #IMPLIED
+  appleExerciseTime        CDATA #IMPLIED
+  appleExerciseTimeGoal    CDATA #IMPLIED
+  appleStandHours          CDATA #IMPLIED
+  appleStandHoursGoal      CDATA #IMPLIED
+>
+<!ELEMENT MetadataEntry EMPTY>
+<!ATTLIST MetadataEntry
+  key   CDATA #REQUIRED
+  value CDATA #REQUIRED
+>
+<!-- Note: Heart Rate Variability records captured by Apple Watch may include an associated list of instantaneous beats-per-minute readings. -->
+<!ELEMENT HeartRateVariabilityMetadataList (InstantaneousBeatsPerMinute*)>
+<!ELEMENT InstantaneousBeatsPerMinute EMPTY>
+<!ATTLIST InstantaneousBeatsPerMinute
+  bpm  CDATA #REQUIRED
+  time CDATA #REQUIRED
+>
+<!ELEMENT ClinicalRecord EMPTY>
+<!ATTLIST ClinicalRecord
+  type              CDATA #REQUIRED
+  identifier        CDATA #REQUIRED
+  sourceName        CDATA #REQUIRED
+  sourceURL         CDATA #REQUIRED
+  fhirVersion       CDATA #REQUIRED
+  receivedDate      CDATA #REQUIRED
+  resourceFilePath  CDATA #REQUIRED
+>
+<!ELEMENT Audiogram EMPTY>
+<!ATTLIST Audiogram
+  type          CDATA #REQUIRED
+  sourceName    CDATA #REQUIRED
+  sourceVersion CDATA #IMPLIED
+  device        CDATA #IMPLIED
+  creationDate  CDATA #IMPLIED
+  startDate     CDATA #REQUIRED
+  endDate       CDATA #REQUIRED
+>
+<!ELEMENT SensitivityPoint EMPTY>
+<!ATTLIST SensitivityPoint
+  frequencyValue   CDATA #REQUIRED
+  frequencyUnit    CDATA #REQUIRED
+  leftEarValue     CDATA #IMPLIED
+  leftEarUnit      CDATA #IMPLIED
+  rightEarValue    CDATA #IMPLIED
+  rightEarUnit     CDATA #IMPLIED
+>
+]>
+<HealthData locale="en_SA@calendar=gregorian">
+  <ExportDate value="2021-02-07 08:29:17 +0300" />
+  <Me
+    HKCharacteristicTypeIdentifierDateOfBirth=""
+    HKCharacteristicTypeIdentifierBiologicalSex="HKBiologicalSexMale"
+    HKCharacteristicTypeIdentifierBloodType="HKBloodTypeNotSet"
+    HKCharacteristicTypeIdentifierFitzpatrickSkinType="HKFitzpatrickSkinTypeNotSet"
+    HKCharacteristicTypeIdentifierCardioFitnessMedicationsUse="None"
+  />
+  <Record
+    type="HKQuantityTypeIdentifierStepCount"
+    sourceName="iPhone"
+    unit="count"
+    creationDate="2015-08-05 04:31:56 +0300"
+    startDate="2015-08-05 02:32:29 +0300"
+    endDate="2015-08-05 02:37:04 +0300"
+    value="233"
+  />
+  <Record
+    type="HKQuantityTypeIdentifierStepCount"
+    sourceName="iPhone"
+    unit="count"
+    creationDate="2015-08-05 04:31:56 +0300"
+    startDate="2015-08-05 03:58:03 +0300"
+    endDate="2015-08-05 04:04:03 +0300"
+    value="44"
+  />
+  <Record
+    type="HKQuantityTypeIdentifierStepCount"
+    sourceName="iPhone"
+    unit="count"
+    creationDate="2015-08-05 04:31:56 +0300"
+    startDate="2015-08-05 04:04:03 +0300"
+    endDate="2015-08-05 04:09:11 +0300"
+    value="201"
+  />
+
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 04:08:29 +0300"
+    startDate="2020-11-14 03:52:15 +0300"
+    endDate="2020-11-14 03:52:51 +0300"
+    value="0.17"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 04:08:29 +0300"
+    startDate="2020-11-14 03:53:25 +0300"
+    endDate="2020-11-14 03:53:42 +0300"
+    value="0.2"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 04:08:29 +0300"
+    startDate="2020-11-14 04:06:59 +0300"
+    endDate="2020-11-14 04:07:41 +0300"
+    value="0.05"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 07:06:09 +0300"
+    startDate="2020-11-14 04:45:06 +0300"
+    endDate="2020-11-14 04:45:31 +0300"
+    value="0"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 07:06:09 +0300"
+    startDate="2020-11-14 04:45:45 +0300"
+    endDate="2020-11-14 04:46:20 +0300"
+    value="0"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 07:06:09 +0300"
+    startDate="2020-11-14 04:55:56 +0300"
+    endDate="2020-11-14 04:56:07 +0300"
+    value="0"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 07:06:09 +0300"
+    startDate="2020-11-14 05:05:35 +0300"
+    endDate="2020-11-14 05:06:06 +0300"
+    value="0"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 22:50:54 +0300"
+    startDate="2020-11-14 18:46:21 +0300"
+    endDate="2020-11-14 18:47:19 +0300"
+    value="0"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="1" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 22:50:54 +0300"
+    startDate="2020-11-14 19:16:06 +0300"
+    endDate="2020-11-14 19:17:03 +0300"
+    value="0.12"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="1" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.2"
+    device="&lt;&lt;HKDevice: 0x281396ad0&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.2&gt;"
+    unit="%"
+    creationDate="2020-11-14 22:50:54 +0300"
+    startDate="2020-11-14 20:01:20 +0300"
+    endDate="2020-11-14 20:01:59 +0300"
+    value="0.11"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+  <Record
+    type="HKQuantityTypeIdentifierWalkingAsymmetryPercentage"
+    sourceName="iPhone"
+    sourceVersion="14.4"
+    device="&lt;&lt;HKDevice: 0x281396850&gt;, name:iPhone, manufacturer:Apple Inc., model:iPhone, hardware:iPhone12,1, software:14.4&gt;"
+    unit="%"
+    creationDate="2021-02-07 01:21:05 +0300"
+    startDate="2021-02-06 22:36:42 +0300"
+    endDate="2021-02-06 22:37:35 +0300"
+    value="0.03"
+  >
+    <MetadataEntry key="HKMetadataKeyDevicePlacementSide" value="2" />
+  </Record>
+</HealthData>
