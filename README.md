@@ -1,5 +1,13 @@
 This README is a work-in-progress. Please check the issues to see if something has not already been flagged for review.
 
+# Prerequisites
+
+This repo assumes that you are familiar with:
+- JavaScript
+- React
+- Storybook
+- Yarn
+
 # Quickstart
 
 See [`QUICKSTART.md`](./QUICKSTART.md).
