@@ -12,7 +12,7 @@ const App = () => {
 
   return (
     <div>
-      <div>stage-1</div>
+      <div>stage-2</div>
     </div>
   );
 };
