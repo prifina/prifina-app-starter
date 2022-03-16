@@ -1854,37 +1854,7 @@ const App = () => {
                               </>
                               
                             ))}
-                            {/* {allData.messagesTo.concat(allData.messagesFrom).filter(messagesWithUser).sort((firstEle,secondEle) => {console.log("aaaa",firstEle, secondEle, moment(firstEle.updatedAt).isBefore(secondEle.updatedAt));if (moment(firstEle.updatedAt).isBefore(secondEle.updatedAt)){return 1} else if (moment(secondEle.updatedAt).isBefore(firstEle.updatedAt)) {return -1} else {return 0}}).map(message => (
-                              <>
-                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO">
-                              {message.from.id === profileID ? (
-                                <>
-                              <ContactDetailsChatImage
-                                src={allData.contactPicture.url}
-                                alt="Contact Avatar"
-                                className="Avatar__Image-sc-1gddwuf-0 kaqgMw"
-                              />                                
-                                </>
-                              ):(
-                                <>
-                              <ContactDetailsChatImage
-                                src={selectedContact.contactPicture.url}
-                                alt="Contact Avatar"
-                                className="Avatar__Image-sc-1gddwuf-0 kaqgMw"
-                              />
-                                </>
-                              )}
-                              <ContactDetailsDivAfterChatImage className="RecentConversations__InfoContainer-sc-1tr4pbl-1 iOpVYW">
-                                <ContactDetailsSpan1AfterChat className="RecentConversations__Title-sc-1tr4pbl-2 kZfYCs">
-                                  {message.contents}
-                                </ContactDetailsSpan1AfterChat>
-                                <ContactDetailsSpan2AfterChat className="RecentConversations__Timestamp-sc-1tr4pbl-3 iGfaLP">
-                                  {moment(message.updatedAt).fromNow()}{" "}
-                                </ContactDetailsSpan2AfterChat>
-                              </ContactDetailsDivAfterChatImage>
-                            </ContactDetailsChatD>
-                              </>
-                            ))} */}
+                            
 
                           </div>
                         </ContactDetailsDividerSection3>
@@ -1892,7 +1862,7 @@ const App = () => {
                           </>
                         ): (
                           <>
-                          {/* {console.log("SC", selectedContact)} */}
+                          
                           </>
                         )
                       }
