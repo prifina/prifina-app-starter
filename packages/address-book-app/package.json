@@ -71,5 +71,9 @@
   },
   "bugs": {
     "url": "https://github.com/prifina/prifina-app-starter/issues"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "moment": "^2.29.1"
   }
 }
