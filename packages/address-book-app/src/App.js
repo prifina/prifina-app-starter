@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import { usePrifina, Op } from "@prifina/hooks";
 import moment from 'moment'
+import { Button } from "./components/Button";
+import { ContactPage } from "./components/ContactPage";
 
 const processData = (data) => {};
 
@@ -716,12 +718,23 @@ const App = () => {
 
   const [profileID, setProfileID] = useState("cl0k5wgxv37530cjre749c8hu")
   const [selectedContact, setSelectedContact] = useState(null)
+  const [selectedConvo, setSelectedConvo] = useState(null)
+  const [messagesPagi, setMessagesPagination] = useState({
+    before: "",
+    messages: [],
+    hasPreviousPage: false
+  })
+  const [convosPagi, setConvosPagination] = useState({
+    after: "",
+    messages: [],
+    hasNextPage: false
+  })
   const [allData, setAllData] = useState([])
   const [contacts, setContacts] = useState([])
   const [possibleContacts, setPossibleContacts] = useState([])
+  const [tempInput, setTempInput] = useState("")
   const [tempProfile, setTempProfile] = useState({
-    forename: "",
-    surname: "",
+    name: "",
     job: "",
     jobDescription: "",
     workNumber: "",
@@ -747,8 +760,7 @@ const App = () => {
       "query": `
       query getData($id: ID) {
         addressBookApp(where: {id: $id}) {  
-          forename
-          surname  
+          name
           country
             bio
             email
@@ -757,8 +769,7 @@ const App = () => {
             job
             jobDescription
           contacts {
-            forename
-            surname
+            name
             country
             bio
             email
@@ -793,8 +804,7 @@ const App = () => {
       
 
       setTempProfile({
-        forename: repsonse.data.data.addressBookApp.forename,
-        surname: repsonse.data.data.addressBookApp.surname,
+        name: repsonse.data.data.addressBookApp.name,
         job: repsonse.data.data.addressBookApp.job,
         jobDescription: repsonse.data.data.addressBookApp.jobDescription,
         workNumber: repsonse.data.data.addressBookApp.workNumber,
@@ -811,6 +821,7 @@ const App = () => {
 
   const [step, setStep] = useState(0)
   const fetchConvos= async e =>{
+    conversationPagination()
 
     
 
@@ -822,7 +833,7 @@ const App = () => {
           where: {addressBookApps_some: {id:$id}, AND: {addressBookApps_some: {id: $id1}}}
         ) {
           id
-          messages(first: 1, orderBy: updatedAt_ASC) {
+          messages(orderBy: updatedAt_ASC) {
             contents
             from {
               ... on AddressBookApp {
@@ -860,10 +871,18 @@ const App = () => {
   useEffect(() => {
     if (selectedContact !== null){
 
-      fetchConvos()
+      conversationPagination()
     }
 
   },[selectedContact])
+  
+  useEffect(() => {
+    
+    messagesPagination()
+
+  },[selectedConvo])
+
+
 
   const handleInputChange = e => {
     const target = e.target
@@ -876,6 +895,16 @@ const App = () => {
 
   }
 
+  const handleInputChangeMessage = e => {
+    const target = e.target
+    const name = target.name
+    const value = target.value
+    setTempInput(value)
+
+  }
+
+
+
   const saveProfile = async() => {
     
     
@@ -883,9 +912,9 @@ const App = () => {
     const saveProfileMutation = {
       "operationName":"MyMutation",
       "query": `
-      mutation MyMutation($id: ID, $bio: String, $email: String, $forename: String, $job: String, $jobDescription: String, $mobile: String, $surname: String, $workNumber: String) {
+      mutation MyMutation($id: ID, $bio: String, $email: String, $name: String, $job: String, $jobDescription: String, $mobile: String, $workNumber: String) {
         updateAddressBookApp(
-          data: {bio: $bio, email: $email, forename: $forename, job: $job, jobDescription: $jobDescription, mobile: $mobile, surname: $surname, workNumber: $workNumber}
+          data: {bio: $bio, email: $email, name: $name, job: $job, jobDescription: $jobDescription, mobile: $mobile, workNumber: $workNumber}
           where: {id: $id}
         ){
           id
@@ -893,7 +922,7 @@ const App = () => {
       }
       
       `,
-    "variables": {"id": profileID, "bio": tempProfile.bio, "email": tempProfile.email, "forename": tempProfile.forename, "job": tempProfile.job, "jobDescription": tempProfile.jobDescription, "mobile": tempProfile.mobile, "surname": tempProfile.surname, "workNumber": tempProfile.workNumber}}
+    "variables": {"id": profileID, "bio": tempProfile.bio, "email": tempProfile.email, "job": tempProfile.job, "jobDescription": tempProfile.jobDescription, "mobile": tempProfile.mobile, "workNumber": tempProfile.workNumber}}
     try {
       const repsonse = await axios({
         url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
@@ -904,8 +933,7 @@ const App = () => {
       if (repsonse.status === 200){
         setAllData({
           ...allData,
-          forename: tempProfile.forename,
-          surname: tempProfile.surname,
+          name: tempProfile.name,
           job: tempProfile.job,
           jobDescription: tempProfile.jobDescription,
           workNumber: tempProfile.workNumber,
@@ -927,25 +955,26 @@ const App = () => {
     const findPossibleContactsQuery = {
       "operationName":"MyQuery",
       "query": `
-      query MyQuery($email: String) {
-        addressBookApps(where: {email_contains: $email}) {
+      query MyQuery($name_contains: String) {
+        addressBookApps(where: {name_contains: $name_contains}) {
           id
-          forename
-          surname
           job
           jobDescription
           mobile
           workNumber
           email
           bio
+          name
           contactPicture {
             url
           }
         }
       }
       
+      
+      
       `,
-    "variables": {"email": e.target.value}}
+    "variables": {"name_contains": e.target.value}}
     try {
       const repsonse = await axios({
         url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
@@ -975,9 +1004,9 @@ const App = () => {
   const findContacts = (e) => {
     console.log("Contacts", contacts)
     console.log("a Contacts", allData.contacts)
-    console.log("Find Contacts", allData.contacts.filter(contact=>contact.email.includes(e.target.value)))
+    console.log("Find Contacts", allData.contacts.filter(contact=>contact.name.toLowerCase().includes(e.target.value.toLowerCase())))
     
-    setContacts(allData.contacts.filter(contact=>contact.email.includes(e.target.value)))
+    setContacts(allData.contacts.filter(contact=>contact.name.toLowerCase().includes(e.target.value.toLowerCase())))
       // console.log(allData);
 
   }
@@ -996,8 +1025,7 @@ const App = () => {
         ) {
           id
           contacts {
-            forename
-            surname
+            name
             country
             bio
             email
@@ -1052,8 +1080,7 @@ const App = () => {
         ) {
           id
           contacts {
-            forename
-            surname
+            name
             country
             bio
             email
@@ -1088,7 +1115,388 @@ const App = () => {
 
       })
       setContacts(repsonse.data.data.updateAddressBookApp.contacts)
+      setConvosPagination({
+        after: "",
+        messages: [],
+        hasNextPage: false
+      });
       setSelectedContact(null)
+      // console.log(allData);
+    } catch (e) {
+      console.log("error ", e);
+    }
+  }
+
+  const newConversation = async() => {
+    
+    
+
+    const createConversationMutation = {
+      "operationName":"MyMutation",
+      "query": `
+      mutation MyMutation($contents: String, $id1: ID, $id2: ID) {
+        createMessage(
+          data: {contents: $contents, conversation: {create: {addressBookApps: {connect: [{id: $id1}, {id: $id2}]}}}, from: {connect: {AddressBookApp: {id: $id1}}}}
+        ) {
+          conversation {
+            id
+            messages {
+                  id
+          from {
+            ... on AddressBookApp {
+              id
+              contactPicture {
+                url
+              }
+            }
+          }
+          updatedAt
+          contents
+              }
+            }
+        }
+      }
+      
+      
+      `,
+    "variables": {"contents": tempInput, "id1": profileID, "id2": selectedContact.id}}
+    try {
+      const repsonse = await axios({
+        url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
+        method: "post",
+        headers: headers,
+        data: createConversationMutation,
+      });
+      if (repsonse.status === 200){
+        setSelectedConvo(repsonse.data.data.createMessage.conversation)
+        setTempInput("")
+
+
+      }
+      // console.log(allData);
+    } catch (e) {
+      console.log("error ", e);
+    }
+  }
+
+  const finishMessage = (e) => {
+    if(selectedConvo === null){
+      newConversation()
+    } else {
+      sendMessage()
+    }
+
+  }
+
+
+
+  const sendMessage = async (e) => {
+    
+    
+
+    const sendMessageMutation = {
+      "operationName":"MyMutation",
+      "query": `
+      mutation MyMutation($id: ID = "", $contents: String = "", $id1: ID = "") {
+        createMessage(
+          data: {contents: $contents, conversation: {connect: {id: $id}}, from: {connect: {AddressBookApp: {id: $id1}}}}
+        ) {
+          id
+          from {
+            ... on AddressBookApp {
+              id
+              contactPicture {
+                url
+              }
+            }
+          }
+          updatedAt
+          contents
+        }
+      }
+      
+      
+      
+      `,
+    "variables": {"id": selectedConvo.id, "id1": profileID, "contents": tempInput}}
+    
+    try {
+      const repsonse = await axios({
+        url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
+        method: "post",
+        headers: headers,
+        data: sendMessageMutation,
+      });
+      
+      console.log(repsonse)
+      setMessagesPagination({
+        before: "",
+        messages: [],
+        hasPreviousPage: false
+      })
+      setSelectedConvo({
+        ...selectedConvo,
+        messages: [...selectedConvo.messages, repsonse.data.data.createMessage]
+      })
+      setTempInput("")
+      
+      // console.log(allData);
+    } catch (e) {
+      console.log("error ", e);
+    }
+  }
+  
+
+  const messagesPagination = async (e) => {
+    
+
+
+    
+    try {
+      var findPossibleContactsQuery
+      if(messagesPagi.before!==""){
+        findPossibleContactsQuery = {
+          "operationName":"MyQuery",
+          "query": `
+          query MyQuery($id: ID, $before: String) {
+            messagesConnection(last: 3, before: $before, where: {conversation: {id: $id}}) {
+              edges {
+                node {
+                  id
+            from {
+              ... on AddressBookApp {
+                id
+                contactPicture {
+                  url
+                }
+              }
+            }
+            updatedAt
+            contents
+                }
+                cursor
+              }
+              pageInfo {
+                endCursor
+                hasNextPage
+                hasPreviousPage
+                pageSize
+                startCursor
+              }
+            }
+          }
+          
+          
+          
+          `,
+        "variables": {"id": selectedConvo.id, "before": messagesPagi.before}}
+        const repsonse = await axios({
+          url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
+          method: "post",
+          headers: headers,
+          data: findPossibleContactsQuery,
+        });
+        
+        // console.log(possibleContacts)
+        console.log(repsonse)
+
+        setMessagesPagination({
+          messages: repsonse.data.data.messagesConnection.edges.concat(messagesPagi.messages),
+          before: repsonse.data.data.messagesConnection.pageInfo.startCursor,
+          hasPreviousPage: repsonse.data.data.messagesConnection.pageInfo.hasPreviousPage
+        })
+      } else {
+        findPossibleContactsQuery = {
+          "operationName":"MyQuery",
+          "query": `
+          query MyQuery($id: ID) {
+            messagesConnection(last: 3, where: {conversation: {id: $id}}) {
+              edges {
+                node {
+                  id
+            from {
+              ... on AddressBookApp {
+                id
+                contactPicture {
+                  url
+                }
+              }
+            }
+            updatedAt
+            contents
+  
+                }
+                cursor
+              }
+              pageInfo {
+                endCursor
+                hasNextPage
+                hasPreviousPage
+                pageSize
+                startCursor
+              }
+            }
+          }
+          
+          
+          
+          `,
+        "variables": {"id": selectedConvo.id}}
+        const repsonse = await axios({
+          url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
+          method: "post",
+          headers: headers,
+          data: findPossibleContactsQuery,
+        });
+        
+        // console.log(possibleContacts)
+        console.log(repsonse)
+        setMessagesPagination({
+          messages: repsonse.data.data.messagesConnection.edges,
+          before: repsonse.data.data.messagesConnection.pageInfo.startCursor,
+          hasPreviousPage: repsonse.data.data.messagesConnection.pageInfo.hasPreviousPage
+        })
+      }
+      
+      // if (repsonse.status === 200){
+      //   setPossibleContacts(repsonse.data.data.addressBookApps.filter(result => {
+      //     if (result.id === profileID || allData.contacts.some(contact=>contact.id===result.id) ){
+      //       return false
+      //     } else {
+      //       return true
+      //     }
+      //   }))
+      // }
+      // console.log(allData);
+    } catch (e) {
+      console.log("error ", e);
+    }
+  }
+
+  const conversationPagination = async (e) => {
+    
+
+
+    
+    try {
+      var findPossibleContactsQuery
+      if(convosPagi.after!==""){
+        findPossibleContactsQuery = {
+          "operationName":"MyQuery",
+          "query": `
+          query MyQuery($after: String, $id: ID, $id1: ID) {
+            conversationsConnection(orderBy: updatedAt_DESC, first: 3, after: $after, where: {addressBookApps_some: {id:$id}, AND: {addressBookApps_some: {id: $id1}}}) {
+              edges {
+                node {
+                  id
+                  updatedAt
+                  messages(first: 1) {
+                    id
+                    contents
+                    updatedAt
+                    from {
+                      ... on AddressBookApp {
+                        contactPicture {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              pageInfo {
+                endCursor
+                hasNextPage
+                hasPreviousPage
+                pageSize
+                startCursor
+              }
+            }
+          }
+          
+          `,
+        "variables": {"id": profileID, "id1": selectedContact.id, "after": convosPagi.after}}
+        const repsonse = await axios({
+          url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
+          method: "post",
+          headers: headers,
+          data: findPossibleContactsQuery,
+        });
+        
+        // console.log(possibleContacts)
+        console.log(repsonse)
+
+        setConvosPagination({
+          messages: convosPagi.messages.concat(repsonse.data.data.conversationsConnection.edges),
+          after: repsonse.data.data.conversationsConnection.pageInfo.endCursor,
+          hasNextPage: repsonse.data.data.conversationsConnection.pageInfo.hasNextPage
+        })
+      } else {
+        findPossibleContactsQuery = {
+          "operationName":"MyQuery",
+          "query": `
+          query MyQuery($id: ID, $id1: ID) {
+            conversationsConnection(orderBy: updatedAt_DESC, first: 3, where: {addressBookApps_some: {id:$id}, AND: {addressBookApps_some: {id: $id1}}}) {
+              edges {
+                node {
+                  id
+                  updatedAt
+                  messages(first: 1) {
+                    id
+                    contents
+                    updatedAt
+                    from {
+                      ... on AddressBookApp {
+                        contactPicture {
+                          url
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              pageInfo {
+                endCursor
+                hasNextPage
+                hasPreviousPage
+                pageSize
+                startCursor
+              }
+            }
+          }
+          
+          `,
+        "variables": {"id": profileID, "id1": selectedContact.id}}
+        const repsonse = await axios({
+          url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
+          method: "post",
+          headers: headers,
+          data: findPossibleContactsQuery,
+        });
+        
+        // console.log(possibleContacts)
+        console.log(repsonse)
+        console.log("TEST",{
+          messages: repsonse.data.data.conversationsConnection.edges,
+          after: repsonse.data.data.conversationsConnection.pageInfo.endCursor,
+          hasNextPage: repsonse.data.data.conversationsConnection.pageInfo.hasPreviousPage
+        })
+        setConvosPagination({
+          messages: repsonse.data.data.conversationsConnection.edges,
+          after: repsonse.data.data.conversationsConnection.pageInfo.endCursor,
+          hasNextPage: repsonse.data.data.conversationsConnection.pageInfo.hasNextPage
+        })
+      }
+      
+      // if (repsonse.status === 200){
+      //   setPossibleContacts(repsonse.data.data.addressBookApps.filter(result => {
+      //     if (result.id === profileID || allData.contacts.some(contact=>contact.id===result.id) ){
+      //       return false
+      //     } else {
+      //       return true
+      //     }
+      //   }))
+      // }
       // console.log(allData);
     } catch (e) {
       console.log("error ", e);
@@ -1152,14 +1560,18 @@ const App = () => {
 
               <MainUserName className="Sidebar__Username-sc-10j93j9-4 biexVg">
                 {/* User Name */}
-                {allData.forename} {allData.surname}
+                {allData.name}
               </MainUserName>
             </MainSidebar>
             <SidebarUl className="Sidebar__SidebarList-sc-10j93j9-1 gSANT">
               <li>
                 <SidebarOption
                   className="Sidebar__StyledNavLink-sc-10j93j9-2 gZZvdm active"
-                  onClick={()=>{setStep(0);setSelectedContact(null)}}
+                  onClick={()=>{setStep(0);setConvosPagination({
+                    after: "",
+                    messages: [],
+                    hasNextPage: false
+                  });setSelectedContact(null)}}
                   aria-current="page"
                 >
                   <SidebarSvg
@@ -1181,7 +1593,11 @@ const App = () => {
               <li>
                 <SidebarOption
                   className="Sidebar__StyledNavLink-sc-10j93j9-2 gZZvdm active"
-                  onClick={()=>{setStep(1);setSelectedContact(null)}}
+                  onClick={()=>{setStep(1);setConvosPagination({
+                    after: "",
+                    messages: [],
+                    hasNextPage: false
+                  });setSelectedContact(null)}}
                   aria-current="page"
                 >
                   <SidebarSvg
@@ -1265,7 +1681,11 @@ const App = () => {
                                 {contacts.map(contact => (
                                   <>
                                   
-                        <ContactListLi onClick={() => {setSelectedContact(contact)}}>
+                        <ContactListLi onClick={() => {setConvosPagination({
+        after: "",
+        messages: [],
+        hasNextPage: false
+      });setSelectedContact(contact)}}>
                         <ContactListLiDiv className="ContactListItem__Container-sc-6zfn3o-0 kvYBdu">
                               <MainContactsImage
                                 src={contact.contactPicture.url}
@@ -1275,7 +1695,7 @@ const App = () => {
                               <ContactItemDiv className="ContactListItem__ContactsDetailsContainer-sc-6zfn3o-1 iXVqdu">
                                 {/*<ContactItemSpan1 className="ContactListItem__ContactName-sc-6zfn3o-2 cMdBAk">Birthe Schook</ContactItemSpan1>*/}
                                 <ContactItemSpan1 className="ContactListItem__ContactName-sc-6zfn3o-2 cMdBAk">
-                                  {contact.forename} {contact.surname}
+                                  {contact.name}
                                 </ContactItemSpan1>
                                 <ContactItemSpan2 className="ContactListItem__ContactUsername-sc-6zfn3o-3 bZlGkk">
                                 {contact.job}
@@ -1326,208 +1746,27 @@ const App = () => {
                         selectedContact !== null ? (
                           <>
                           {/* {console.log(selectedContact)} */}
-                          <ContactDetailsContainer className="ContactDetails__DetailsContainer-sc-1gubtf7-1 gBnRzM">
-                        <ContactDetailsHeader className="ContactDetailsHeader__Header-m73fog-0 fqRgHC">
-                          <ContactDetailsSingleImage
-                            src={selectedContact.contactPicture.url}
-                            alt="Contact Profile Image"
-                            className="Avatar__Image-sc-1gddwuf-0 bLUeE"
+                          <ContactPage 
+                          selectedContact={selectedContact}
+                          removeContact={()=>{removeContact()}}
+                          chat={()=>{
+                            setStep(3);
+                            setMessagesPagination({
+                              before: "",
+                              messages: [],
+                              hasPreviousPage: false
+                            });
+                            setTempInput("");}}
+                          convosPagi={convosPagi}
+                          getConvo={()=>{
+                            setStep(3);setMessagesPagination({
+                              before: "",
+                              messages: [],
+                              hasPreviousPage: false
+                            });setSelectedConvo(convo.node);setTempInput("");
+                          }}
+                          fetchMoreConvos={conversationPagination}
                           />
-                          <ContactDetailsHeaderDiv1 className="ContactDetailsHeader__HeaderDetails-m73fog-3 gYZaiX">
-                            <ContactDetailsHeaderDiv2 className="ContactDetailsHeader__Column-m73fog-2 fmzbGl">
-                              <ContactDetailsName className="ContactDetailsHeader__ContactName-m73fog-4 gkrwxG">
-                                {selectedContact.forename} {selectedContact.surname}
-                                <ContactDetailsGreenDot
-                                  title="Online"
-                                  className="ContactDetailsHeader__UserStatus-m73fog-6 cfJRZG"
-                                ></ContactDetailsGreenDot>
-                              </ContactDetailsName>
-                              <ContactDetailsCountry className="ContactDetailsHeader__ContactCountry-m73fog-5 kbBllw">
-                              {selectedContact.country}
-                              </ContactDetailsCountry>
-                            </ContactDetailsHeaderDiv2>
-                            <ContactDetailsChatDiv className="ContactDetailsHeader__Row-m73fog-1 gbVsPW">
-                              <ContactDetailsChatButton className="Button__Container-sc-1ltq5rw-0 hqukir" >
-                                <ContactDetailsChatSvg
-                                  viewBox="0 0 20 20"
-                                  height="18"
-                                  width="18"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="sc-AxjAm dQgIel"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </ContactDetailsChatSvg>
-                                Chat
-                              </ContactDetailsChatButton>
-                              <ContactDetailsChatButton className="Button__Container-sc-1ltq5rw-0 hqukir" onClick={()=>{removeContact()}}>
-                                <ContactDetailsChatSvg
-                                  viewBox="0 0 20 20"
-                                  height="18"
-                                  width="18"
-                                  aria-hidden="true"
-                                  focusable="false"
-                                  fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="sc-AxjAm dQgIel"
-                                >
-                                  <path
-                                    fillRule="evenodd"
-                                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
-                                    clipRule="evenodd"
-                                  ></path>
-                                </ContactDetailsChatSvg>
-                                Remove Contact
-                              </ContactDetailsChatButton>
-                            </ContactDetailsChatDiv>
-                          </ContactDetailsHeaderDiv1>
-                        </ContactDetailsHeader>
-                        <ContactDetailsDivider1 className="ContactDetails__Divider-sc-1gubtf7-3 eKtgsK"></ContactDetailsDivider1>
-                        <ContactDetailsDividerSection1 className="ContactDetails__Section-sc-1gubtf7-4 hZvtxh">
-                          <ContactDetailsSection1H3 className="ContactDetails__SectionHeader-sc-1gubtf7-5 eFXpIL">
-                            Bio
-                          </ContactDetailsSection1H3>
-                          <ContactDetailsSection1P>
-                            {selectedContact.bio}
-                          </ContactDetailsSection1P>
-                        </ContactDetailsDividerSection1>
-                        <ContactDetailsDivider2 className="ContactDetails__Divider-sc-1gubtf7-3 eKtgsK"></ContactDetailsDivider2>
-                        <ContactDetailsDividerSection2 className="ContactDetails__Section-sc-1gubtf7-4 hZvtxh">
-                          <ContactDetailsDividerSection2H3 className="ContactDetails__SectionHeader-sc-1gubtf7-5 eFXpIL">
-                            Contact
-                          </ContactDetailsDividerSection2H3>
-                          <ContactSection2DetailsDiv className="ContactDetails__ContactDetailsContainer-sc-1gubtf7-6 dhuGLj">
-                            <ContactSection2DetailsRow className="ContactDetails__ContactDetailRow-sc-1gubtf7-7 kyrzsA">
-                              <CSection2DetailsRowSvg
-                                viewBox="0 0 20 20"
-                                height="20"
-                                width="20"
-                                aria-hidden="true"
-                                focusable="false"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="sc-AxjAm dQgIel"
-                              >
-                                <path d="M18.672 11H17v6c0 .445-.194 1-1 1h-4v-6H8v6H4c-.806 0-1-.555-1-1v-6H1.328c-.598 0-.47-.324-.06-.748L9.292 2.22c.195-.202.451-.302.708-.312.257.01.513.109.708.312l8.023 8.031c.411.425.539.749-.059.749z"></path>
-                              </CSection2DetailsRowSvg>
-                              <CSection2Span1AfterSvg className="ContactDetails__ContactDetailLabel-sc-1gubtf7-8 gxVRDD">
-                                Mobile:
-                              </CSection2Span1AfterSvg>
-                              <CSection2Span2AfterSvg className="ContactDetails__ContactDetailValue-sc-1gubtf7-9 hnfmlH">
-                              {selectedContact.mobile}
-                              </CSection2Span2AfterSvg>
-                            </ContactSection2DetailsRow>
-                            <ContactSection2DetailsRow className="ContactDetails__ContactDetailRow-sc-1gubtf7-7 kyrzsA">
-                              <CSection2DetailsRowSvg
-                                viewBox="0 0 20 20"
-                                height="20"
-                                width="20"
-                                aria-hidden="true"
-                                focusable="false"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="sc-AxjAm dQgIel"
-                              >
-                                <path d="M14.004 0H5.996A1.996 1.996 0 004 1.996v16.007C4 19.106 4.894 20 5.996 20h8.007A1.997 1.997 0 0016 18.004V1.996A1.996 1.996 0 0014.004 0zM10 19c-.69 0-1.25-.447-1.25-1s.56-1 1.25-1 1.25.447 1.25 1-.56 1-1.25 1zm4-3H6V2h8v14z"></path>
-                              </CSection2DetailsRowSvg>
-                              <CSection2Span1AfterSvg className="ContactDetails__ContactDetailLabel-sc-1gubtf7-8 gxVRDD">
-                                Work:
-                              </CSection2Span1AfterSvg>
-                              <CSection2Span2AfterSvg className="ContactDetails__ContactDetailValue-sc-1gubtf7-9 hnfmlH">
-                              {selectedContact.workNumber}
-                              </CSection2Span2AfterSvg>
-                            </ContactSection2DetailsRow>
-                            <ContactSection2DetailsRow className="ContactDetails__ContactDetailRow-sc-1gubtf7-7 kyrzsA">
-                              <CSection2DetailsRowSvg
-                                viewBox="0 0 24 24"
-                                height="20"
-                                width="20"
-                                aria-hidden="true"
-                                focusable="false"
-                                fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="sc-AxjAm dQgIel"
-                              >
-                                <path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4.7l-8 5.334L4 8.7V6.297l8 5.333 8-5.333V8.7z"></path>
-                              </CSection2DetailsRowSvg>
-                              <CSection2Span1AfterSvg className="ContactDetails__ContactDetailLabel-sc-1gubtf7-8 gxVRDD">
-                                Email:
-                              </CSection2Span1AfterSvg>
-                              <CSection2Span2AfterSvg className="ContactDetails__ContactDetailValue-sc-1gubtf7-9 hnfmlH">
-                              {selectedContact.email}
-                              </CSection2Span2AfterSvg>
-                            </ContactSection2DetailsRow>
-                          </ContactSection2DetailsDiv>
-                        </ContactDetailsDividerSection2>
-                        <ContactDetailsDivider3 className="ContactDetails__Divider-sc-1gubtf7-3 eKtgsK"></ContactDetailsDivider3>
-                        <ContactDetailsDividerSection3 className="ContactDetails__Section-sc-1gubtf7-4 hZvtxh">
-                          <ContactDetailsDividerSection33H3 className="ContactDetails__SectionHeader-sc-1gubtf7-5 eFXpIL">
-                            Recent Conversations
-                          </ContactDetailsDividerSection33H3>
-                          <div>
-                            {}
-                            {convos.map(convo=>(
-                              <>
-                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO">
-                              <ContactDetailsChatImage
-                                src={convo.messages[0].from.contactPicture.url}
-                                alt="Contact Avatar"
-                                className="Avatar__Image-sc-1gddwuf-0 kaqgMw"
-                              />                                
-
-                              <ContactDetailsDivAfterChatImage className="RecentConversations__InfoContainer-sc-1tr4pbl-1 iOpVYW">
-                                <ContactDetailsSpan1AfterChat className="RecentConversations__Title-sc-1tr4pbl-2 kZfYCs">
-                                  {convo.messages[0].contents}
-                                </ContactDetailsSpan1AfterChat>
-                                <ContactDetailsSpan2AfterChat className="RecentConversations__Timestamp-sc-1tr4pbl-3 iGfaLP">
-                                  {moment(convo.messages[0].updatedAt).fromNow()}{" "}
-                                </ContactDetailsSpan2AfterChat>
-                              </ContactDetailsDivAfterChatImage>
-                            </ContactDetailsChatD>
-                              </>
-                              
-                            ))}
-                            {/* {allData.messagesTo.concat(allData.messagesFrom).filter(messagesWithUser).sort((firstEle,secondEle) => {console.log("aaaa",firstEle, secondEle, moment(firstEle.updatedAt).isBefore(secondEle.updatedAt));if (moment(firstEle.updatedAt).isBefore(secondEle.updatedAt)){return 1} else if (moment(secondEle.updatedAt).isBefore(firstEle.updatedAt)) {return -1} else {return 0}}).map(message => (
-                              <>
-                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO">
-                              {message.from.id === profileID ? (
-                                <>
-                              <ContactDetailsChatImage
-                                src={allData.contactPicture.url}
-                                alt="Contact Avatar"
-                                className="Avatar__Image-sc-1gddwuf-0 kaqgMw"
-                              />                                
-                                </>
-                              ):(
-                                <>
-                              <ContactDetailsChatImage
-                                src={selectedContact.contactPicture.url}
-                                alt="Contact Avatar"
-                                className="Avatar__Image-sc-1gddwuf-0 kaqgMw"
-                              />
-                                </>
-                              )}
-                              <ContactDetailsDivAfterChatImage className="RecentConversations__InfoContainer-sc-1tr4pbl-1 iOpVYW">
-                                <ContactDetailsSpan1AfterChat className="RecentConversations__Title-sc-1tr4pbl-2 kZfYCs">
-                                  {message.contents}
-                                </ContactDetailsSpan1AfterChat>
-                                <ContactDetailsSpan2AfterChat className="RecentConversations__Timestamp-sc-1tr4pbl-3 iGfaLP">
-                                  {moment(message.updatedAt).fromNow()}{" "}
-                                </ContactDetailsSpan2AfterChat>
-                              </ContactDetailsDivAfterChatImage>
-                            </ContactDetailsChatD>
-                              </>
-                            ))} */}
-
-                          </div>
-                        </ContactDetailsDividerSection3>
-                      </ContactDetailsContainer>
                           </>
                         ): (
                           <>
@@ -1572,7 +1811,11 @@ const App = () => {
                                 {possibleContacts.map(contact => (
                                   <>
                                   
-                        <ContactListLi onClick={() => {setSelectedContact(contact)}}>
+                        <ContactListLi onClick={() => {setConvosPagination({
+        after: "",
+        messages: [],
+        hasNextPage: false
+      });setSelectedContact(contact)}}>
                         <ContactListLiDiv className="ContactListItem__Container-sc-6zfn3o-0 kvYBdu">
                         {contact.contactPicture!==null ? (
                 <>
@@ -1595,7 +1838,7 @@ const App = () => {
                               <ContactItemDiv className="ContactListItem__ContactsDetailsContainer-sc-6zfn3o-1 iXVqdu">
                                 {/*<ContactItemSpan1 className="ContactListItem__ContactName-sc-6zfn3o-2 cMdBAk">Birthe Schook</ContactItemSpan1>*/}
                                 <ContactItemSpan1 className="ContactListItem__ContactName-sc-6zfn3o-2 cMdBAk">
-                                  {contact.forename} {contact.surname}
+                                  {contact.name}
                                 </ContactItemSpan1>
                                 <ContactItemSpan2 className="ContactListItem__ContactUsername-sc-6zfn3o-3 bZlGkk">
                                 {contact.job}
@@ -1668,7 +1911,7 @@ const App = () => {
                           <ContactDetailsHeaderDiv1 className="ContactDetailsHeader__HeaderDetails-m73fog-3 gYZaiX">
                             <ContactDetailsHeaderDiv2 className="ContactDetailsHeader__Column-m73fog-2 fmzbGl">
                               <ContactDetailsName className="ContactDetailsHeader__ContactName-m73fog-4 gkrwxG">
-                                {selectedContact.forename} {selectedContact.surname}
+                                {selectedContact.name} 
                                 <ContactDetailsGreenDot
                                   title="Online"
                                   className="ContactDetailsHeader__UserStatus-m73fog-6 cfJRZG"
@@ -1833,21 +2076,21 @@ const App = () => {
                           </ContactDetailsDividerSection33H3>
                           <div>
                             {}
-                            {convos.map(convo=>(
+                            {convosPagi.messages.map(convo=>(
                               <>
-                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO">
+                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO" >
                               <ContactDetailsChatImage
-                                src={convo.messages[0].from.contactPicture.url}
+                                src={convo.node.messages[0].from.contactPicture.url}
                                 alt="Contact Avatar"
                                 className="Avatar__Image-sc-1gddwuf-0 kaqgMw"
                               />                                
 
-                              <ContactDetailsDivAfterChatImage className="RecentConversations__InfoContainer-sc-1tr4pbl-1 iOpVYW">
+                              <ContactDetailsDivAfterChatImage className="RecentConversations__InfoContainer-sc-1tr4pbl-1 iOpVYW" >
                                 <ContactDetailsSpan1AfterChat className="RecentConversations__Title-sc-1tr4pbl-2 kZfYCs">
-                                  {convo.messages[0].contents}
+                                  {convo.node.messages[0].contents}
                                 </ContactDetailsSpan1AfterChat>
                                 <ContactDetailsSpan2AfterChat className="RecentConversations__Timestamp-sc-1tr4pbl-3 iGfaLP">
-                                  {moment(convo.messages[0].updatedAt).fromNow()}{" "}
+                                  {moment(convo.node.updatedAt).fromNow()}{" "}
                                 </ContactDetailsSpan2AfterChat>
                               </ContactDetailsDivAfterChatImage>
                             </ContactDetailsChatD>
@@ -1886,16 +2129,10 @@ const App = () => {
                 <MainInsideContactDiv className="ContactsPage__RowContainer-sc-1ewu7oo-1 kaeyif">
                   <ContactDetailsDividerSection1>
                   <ContactDetailsSection1H3 className="ContactDetails__SectionHeader-sc-1gubtf7-5 eFXpIL">
-                            Forename
+                            Name
                           </ContactDetailsSection1H3>
                           <ContactDetailsSection1P>
-                            <input value={tempProfile.forename} name="forename" onChange={handleInputChange}></input>
-                          </ContactDetailsSection1P>
-                  <ContactDetailsSection1H3 className="ContactDetails__SectionHeader-sc-1gubtf7-5 eFXpIL">
-                            Surname
-                          </ContactDetailsSection1H3>
-                          <ContactDetailsSection1P>
-                          <input value={tempProfile.surname} name="surname" onChange={handleInputChange}></input>
+                            <input value={tempProfile.name} name="name" onChange={handleInputChange}></input>
                           </ContactDetailsSection1P>
                   <ContactDetailsSection1H3 className="ContactDetails__SectionHeader-sc-1gubtf7-5 eFXpIL">
                             Job
@@ -1939,6 +2176,164 @@ const App = () => {
               </MainInsideContentDiv>
             </MainInsideSection>
           </MainInnerSection>
+          )}
+
+          {step === 3 && (
+            <>
+            <MainInnerSection className="Routes__Container-kfwx58-0 hoiTKx">
+            <MainInsideSection className="Page__Container-adlajs-0 iGHmFf">
+              <MainInsideContentDiv className="Page__Content-adlajs-1 ciiOPl">
+                <MainInsideH1Heading className="ContactsPage__PageHeading-sc-1ewu7oo-0 haeIQk">
+                  Conversation
+                </MainInsideH1Heading>
+                <MainInsideContactDiv className="ContactsPage__RowContainer-sc-1ewu7oo-1 kaeyif">
+
+
+                  <MainInsideRightDiv className="ContactsPage__ContentContainer-sc-1ewu7oo-2 ContactsPage__ContactsDetailsContainer-sc-1ewu7oo-4 gJELcz">
+                    <SingleContactDetailsMainDiv className="ContactDetails__MainContainer-sc-1gubtf7-0 bGPHuI">
+                      <SingleDetailsBackButton
+                        aria-label="Back Button"
+                        className="ContactDetails__BackButton-sc-1gubtf7-2 eAipaH"
+                      >
+                        <SingleDetailsBackButtonSvg
+                          viewBox="0 0 24 24"
+                          height="30"
+                          width="30"
+                          aria-hidden="true"
+                          focusable="false"
+                          fill="currentColor"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="sc-AxjAm dQgIel"
+                        >
+                          <g data-name="Layer 2">
+                            <path
+                              d="M13.83 19a1 1 0 01-.78-.37l-4.83-6a1 1 0 010-1.27l5-6a1 1 0 011.54 1.28L10.29 12l4.32 5.36a1 1 0 01-.78 1.64z"
+                              data-name="arrow-ios-back"
+                            ></path>
+                          </g>
+                        </SingleDetailsBackButtonSvg>
+                      </SingleDetailsBackButton>
+                      {
+                        selectedConvo !== null ? (
+                          <>
+                          {/* {console.log(selectedContact)} */}
+                          <ContactDetailsContainer className="ContactDetails__DetailsContainer-sc-1gubtf7-1 gBnRzM">
+
+
+                        <ContactDetailsDivider3 className="ContactDetails__Divider-sc-1gubtf7-3 eKtgsK"></ContactDetailsDivider3>
+                        <ContactDetailsDividerSection3 className="ContactDetails__Section-sc-1gubtf7-4 hZvtxh">
+
+                          <div>
+                            {}
+                            {
+                              messagesPagi.hasPreviousPage ? (
+                                <ContactDetailsChatButton className="Button__Container-sc-1ltq5rw-0 hqukir" onClick={messagesPagination}>
+                                <ContactDetailsChatSvg
+                                  viewBox="0 0 20 20"
+                                  height="18"
+                                  width="18"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  fill="currentColor"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="sc-AxjAm dQgIel"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </ContactDetailsChatSvg>
+                                Fetch More
+                              </ContactDetailsChatButton>
+
+
+                              ): (
+                                <>
+                                </>
+                              )
+                            }
+                            {messagesPagi.messages.map(message=>(
+                              <>
+                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO" >
+                              <ContactDetailsChatImage
+                                src={message.node.from.contactPicture.url}
+                                alt="Contact Avatar"
+                                className="Avatar__Image-sc-1gddwuf-0 kaqgMw"
+                              />                                
+
+                              <ContactDetailsDivAfterChatImage className="RecentConversations__InfoContainer-sc-1tr4pbl-1 iOpVYW" >
+                                <ContactDetailsSpan1AfterChat className="RecentConversations__Title-sc-1tr4pbl-2 kZfYCs">
+                                  {message.node.contents}
+                                </ContactDetailsSpan1AfterChat>
+                                <ContactDetailsSpan2AfterChat className="RecentConversations__Timestamp-sc-1tr4pbl-3 iGfaLP">
+                                  {moment(message.node.updatedAt).fromNow()}{" "}
+                                </ContactDetailsSpan2AfterChat>
+                              </ContactDetailsDivAfterChatImage>
+                            </ContactDetailsChatD>
+                              </>
+                              
+                            ))}
+
+                            <textarea value={tempInput} onChange={handleInputChangeMessage}></textarea>
+                            <ContactDetailsChatButton className="Button__Container-sc-1ltq5rw-0 hqukir" onClick={finishMessage}>
+                                <ContactDetailsChatSvg
+                                  viewBox="0 0 20 20"
+                                  height="18"
+                                  width="18"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  fill="currentColor"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="sc-AxjAm dQgIel"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </ContactDetailsChatSvg>
+                                Send
+                              </ContactDetailsChatButton>
+                            
+
+                          </div>
+                        </ContactDetailsDividerSection3>
+                      </ContactDetailsContainer>
+                          </>
+                        ): (
+                          <>
+                          <textarea value={tempInput} onChange={handleInputChangeMessage}></textarea>
+                            <ContactDetailsChatButton className="Button__Container-sc-1ltq5rw-0 hqukir" onClick={finishMessage}>
+                                <ContactDetailsChatSvg
+                                  viewBox="0 0 20 20"
+                                  height="18"
+                                  width="18"
+                                  aria-hidden="true"
+                                  focusable="false"
+                                  fill="currentColor"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="sc-AxjAm dQgIel"
+                                >
+                                  <path
+                                    fillRule="evenodd"
+                                    d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"
+                                    clipRule="evenodd"
+                                  ></path>
+                                </ContactDetailsChatSvg>
+                                Send
+                              </ContactDetailsChatButton>
+                          </>
+                        )
+                      }
+                      
+                    </SingleContactDetailsMainDiv>
+                  </MainInsideRightDiv>
+                </MainInsideContactDiv>
+              </MainInsideContentDiv>
+            </MainInsideSection>
+          </MainInnerSection>
+            </>
           )}
           
         </TopDiv>
