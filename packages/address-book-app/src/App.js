@@ -1756,9 +1756,10 @@ const App = () => {
                               messages: [],
                               hasPreviousPage: false
                             });
-                            setTempInput("");}}
+                            setTempInput("");
+                            setSelectedConvo(null);}}
                           convosPagi={convosPagi}
-                          getConvo={()=>{
+                          getConvo={(convo)=>{
                             setStep(3);setMessagesPagination({
                               before: "",
                               messages: [],

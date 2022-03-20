@@ -816,7 +816,7 @@ export const ContactPage = ({
                             {}
                             {convosPagi.messages.map(convo=>(
                               <>
-                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO" onClick={()=>{getConvo()}}>
+                              <ContactDetailsChatD className="RecentConversations__MessageContainer-sc-1tr4pbl-0 ezApHO" onClick={()=>{getConvo(convo)}}>
                               <ContactDetailsChatImage
                                 src={convo.node.messages[0].from.contactPicture.url}
                                 alt="Contact Avatar"
