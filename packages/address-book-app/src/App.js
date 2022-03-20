@@ -922,7 +922,8 @@ const App = () => {
       }
       
       `,
-    "variables": {"id": profileID, "bio": tempProfile.bio, "email": tempProfile.email, "job": tempProfile.job, "jobDescription": tempProfile.jobDescription, "mobile": tempProfile.mobile, "workNumber": tempProfile.workNumber}}
+    "variables": {"name": tempProfile.name,"id": profileID, "bio": tempProfile.bio, "email": tempProfile.email, "job": tempProfile.job, "jobDescription": tempProfile.jobDescription, "mobile": tempProfile.mobile, "workNumber": tempProfile.workNumber}}
+    
     try {
       const repsonse = await axios({
         url: "https://api-eu-west-2.graphcms.com/v2/ckzd3vyci1bp301z14b775t0o/master",
@@ -930,6 +931,7 @@ const App = () => {
         headers: headers,
         data: saveProfileMutation,
       });
+      console.log(repsonse)
       if (repsonse.status === 200){
         setAllData({
           ...allData,
