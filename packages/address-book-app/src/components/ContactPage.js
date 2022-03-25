@@ -4,410 +4,7 @@ import styled from "styled-components";
 import { Button } from "./Button";
 import moment from "moment";
 
-const StyledBox = styled.div`
-  height: 100%;
-  margin: 0px;
-`;
-
-const MainDiv = styled.div`
-  background-color: rgb(244, 245, 249);
-  height: 100%;
-  font-family: "Inter", "system-ui", "-apple-system", sans-serif;
-`;
-
-const TopDiv = styled.div`
-  height: 100%;
-  display: grid;
-  grid-template-rows: 50px 1fr;
-  grid-template-columns: auto 2fr;
-  grid-template-areas:
-    "header header"
-    "sidebar content";
-`;
-
-const TopHeader = styled.header`
-  grid-area: header / header / header / header;
-  background-color: rgb(58, 82, 156);
-  display: flex;
-  flex-direction: row;
-  -webkit-box-pack: start;
-  justify-content: flex-start;
-  -webkit-box-align: center;
-  align-items: center;
-  padding-left: 15px;
-  box-shadow: rgb(0 0 0 / 50%) 1px 2px 4px;
-`;
-
-const Togglebutton = styled.button`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 2rem;
-  height: 2rem;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 0px;
-  z-index: 10;
-  @media (min-width: 640px) {
-    display: none;
-  }
-`;
-
-const Menudiv = styled.div`
-  width: 2rem;
-  height: 0.25rem;
-  background: rgb(255, 255, 255);
-  border-radius: 10px;
-  transition: all 0.3s linear 0s;
-  position: relative;
-  transform-origin: 1px center;
-`;
-
-const MainHeading = styled.h3`
-  margin-left: 2.5em;
-  color: rgb(255, 255, 255);
-  @media (min-width: 640px) {
-    margin-left: 0.2em;
-  }
-`;
-
-const MainNavigation = styled.nav`
-  grid-area: sidebar / sidebar / sidebar / sidebar;
-  background-color: rgb(237, 237, 247);
-  display: flex;
-  flex-direction: column;
-  min-width: 250px;
-  box-shadow: rgb(0 0 0 / 50%) 1px 2px 4px;
-  @media (max-width: 640px) {
-    position: absolute;
-    height: 100%;
-    transition: transform 0.3s ease-in-out 0s;
-    transform: translateX(-100%);
-    min-width: 70%;
-    z-index: 2;
-  }
-`;
-
-const MainSidebar = styled.div`
-  display: flex;
-  flex-direction: column;
-  -webkit-box-align: center;
-  align-items: center;
-  padding: 15px;
-  background-color: rgb(58, 82, 156);
-  color: rgb(237, 237, 247);
-`;
-
-const MainProfileImage = styled.img`
-  border-radius: 50%;
-  height: 6rem;
-  min-width: 6rem;
-`;
-
-const MainUserName = styled.span`
-  margin-top: 10px;
-  font-size: 1rem;
-`;
-
-const SidebarUl = styled.ul`
-  list-style: none;
-  padding: 0px;
-  margin-top: 0px;
-`;
-
-const SidebarOption = styled.a`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  padding: 20px;
-  text-transform: capitalize;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  border-left: solid 5px #ededf7;
-  color: #3a529c;
-  font-size: 1.3rem;
-  font-weight: bold;
-  @media (min-width: 640px) {
-    font-size: 1rem;
-  }
-`;
-
-const SidebarSvg = styled.svg`
-  height: 1em;
-  width: 1em;
-  margin-right: 1rem;
-  display: inline-block;
-  vertical-align: middle;
-  overflow: hidden;
-`;
-
-const MainInnerSection = styled.main`
-  grid-area: content;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  margin: 10px;
-  overflow: hidden;
-`;
-
-const MainInsideSection = styled.section`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  background-color: white;
-  padding: 0;
-  overflow: hidden;
-`;
-
-const MainInsideContentDiv = styled.div`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  background-color: white;
-  height: 100%;
-  overflow: hidden;
-`;
-
-const MainInsideH1Heading = styled.h1`
-  margin: 20px;
-  color: #495576;
-  font-family: "Inter", "system-ui", "-apple-system", sans-serif;
-`;
-
-const MainInsideContactDiv = styled.div`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  height: 100%;
-  overflow: hidden;
-`;
-
-const MainInsideLeftDiv = styled.div`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  list-style: none;
-  padding: 0;
-  overflow-y: auto;
-`;
-
-const MainInsideRightDiv = styled.div`
-  flex: 2;
-  display: flex;
-  @media (max-width: 640px) {
-    -webkit-transition: all 0.6s;
-    transition: all 0.6s;
-    -webkit-transform: translateX(0);
-    -ms-transform: translateX(0);
-    transform: translateX(0);
-    min-width: 100%;
-  }
-`;
-
-const ContactsListDiv = styled.div`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  list-style: none;
-  padding: 0;
-  overflow-y: auto;
-`;
-const SearchContactsInput = styled.input`
-  min-height: 40px;
-  border-radius: 3px;
-  border: solid 2px #b1b1b7;
-  padding: 0 10px;
-  margin: 20px;
-  box-shadow: 0 11px 13px -6px rgb(135 142 192 / 15%);
-`;
-const ContactListUl = styled.ul`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  overflow-y: auto;
-`;
-const ContactListATag = styled.a`
-  text-decoration: none;
-`;
-const ContactListLi = styled.li`
-  margin: 10px 20px;
-`;
-
-const ContactListLiDiv = styled.div`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-flex-direction: row;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-text-decoration: none;
-  text-decoration: none;
-  background-color: #ededf7;
-  min-height: 4rem;
-  border-radius: 5px;
-  padding: 15px 15px 15px 25px;
-  cursor: pointer;
-  box-shadow: 0 11px 13px -6px rgb(135 142 192 / 15%);
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
-`;
-
-const MainContactsImage = styled.img`
-  border-radius: 50%;
-  height: 5rem;
-  min-width: 5rem;
-`;
-
-const ContactItemDiv = styled.div`
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  margin-left: 20px;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  min-width: 0;
-`;
-
-const ContactItemSpan1 = styled.span`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #495576;
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-bottom: 12px;
-`;
-const ContactItemSpan2 = styled.span`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #495576;
-  font-weight: bold;
-  font-size: 0.8rem;
-  margin-bottom: 8px;
-`;
-const ContactItemSpan3 = styled.span`
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: #495576;
-  font-weight: bold;
-  font-size: 0.8rem;
-`;
-
-const NoMoreContactDiv = styled.div`
-  height: 60px;
-  background-color: #1ca9f0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  color: #ffffff;
-`;
-
 // single contact details css
-
-const SingleContactDetailsMainDiv = styled.div`
-  overflow-y: auto;
-`;
-
-const SingleDetailsBackButton = styled.button`
-  text-align: start;
-  background: none;
-  border: none;
-  cursor: pointer;
-  min-height: 50px;
-  margin-left: 10px;
-  @media (min-width: 640px) {
-    display: none;
-  }
-`;
-
-const SingleDetailsBackButtonSvg = styled.svg`
-  display: inline-block;
-  vertical-align: middle;
-  overflow: hidden;
-`;
 
 const ContactDetailsContainer = styled.div`
   display: -webkit-box;
@@ -691,13 +288,12 @@ const ContactDetailsSpan2AfterChat = styled.span`
 `;
 export const ContactPage = ({
     selectedContact,
+    possibleContact,
     removeContact,
     chat,
     convosPagi,
     getConvo,
-    fetchMoreConvos,
-    ...props
-  }) => (
+    fetchMoreConvos  }) => (
     <ContactDetailsContainer className="ContactDetails__DetailsContainer-sc-1gubtf7-1 gBnRzM">
                         <ContactDetailsHeader className="ContactDetailsHeader__Header-m73fog-0 fqRgHC">
                           <ContactDetailsSingleImage
@@ -721,12 +317,27 @@ export const ContactPage = ({
                             <ContactDetailsChatDiv className="ContactDetailsHeader__Row-m73fog-1 gbVsPW">
                               <Button 
                               title={"Chat"} 
+                              svgString={"M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"}
                               onClickFunc={()=>{
                                 chat()}}/>
-                                <Button 
+                                {
+                                  possibleContact ? (
+                                    <>
+                                    <Button 
+                              title={"Add Contact"} 
+                              onClickFunc={()=>{
+                                removeContact()}}/>
+                                    </>
+                                  ): (
+                                    <>
+                                    <Button 
                               title={"Remove Contact"} 
                               onClickFunc={()=>{
                                 removeContact()}}/>
+                                    </>
+                                  )
+                                }
+                                
                             </ContactDetailsChatDiv>
                           </ContactDetailsHeaderDiv1>
                         </ContactDetailsHeader>
@@ -899,8 +510,9 @@ export const ContactPage = ({
                       </ContactDetailsContainer>
   );
   
-  Button.propTypes = {
+  ContactPage.propTypes = {
     selectedContact: PropTypes.object,
+    possibleContact: PropTypes.bool,
     removeContact: PropTypes.func,
     chat: PropTypes.func,
     convosPagi: PropTypes.func,

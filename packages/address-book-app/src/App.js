@@ -747,6 +747,7 @@ const App = () => {
     bio: ""
   })
   const [convos, setConvos] = useState([])
+
   
   const axios = require("axios");
   const headers = {
@@ -1237,14 +1238,12 @@ const App = () => {
       });
       
       console.log(repsonse)
+      console.log("Just sent", messagesPagi)
       setMessagesPagination({
-        before: "",
-        messages: [],
-        hasPreviousPage: false
-      })
-      setSelectedConvo({
-        ...selectedConvo,
-        messages: [...selectedConvo.messages, repsonse.data.data.createMessage]
+        before: messagesPagi.before,
+        messages: [...messagesPagi.messages, {"node": repsonse.data.data.createMessage, "cursor": repsonse.data.data.createMessage.id}],
+        hasPreviousPage: messagesPagi.hasPreviousPage,
+        cursor: repsonse.data.data.createMessage.id
       })
       setTempInput("")
       
@@ -1385,11 +1384,7 @@ const App = () => {
 
   
 
-  const conversationPagination = async (e) => {
-    
-
-
-    
+  const conversationPagination = async (e) => {  
     try {
       var findPossibleContactsQuery
       if(convosPagi.after!==""){
@@ -1520,6 +1515,9 @@ const App = () => {
       var ids = messagesPagi.messages.map(o=> {
         return o.node.id;
       });
+      console.log("Selected Convo", selectedConvo)
+      console.log("messagesPagi.cursor", messagesPagi.cursor)
+      console.log("ids", ids)
       var findPossibleContactsQuery
         findPossibleContactsQuery = {
           "operationName":"MyQuery",
@@ -1586,9 +1584,9 @@ const App = () => {
   }
 
   useEffect(() => {
-    console.log(messagesPagi)
+    console.log("update", messagesPagi)
 
-    if (step === 3 && messagesPagi.messages.length>0){
+    if (step === 3 && messagesPagi.messages.length>0 && selectedConvo !== null){
       const interval = setInterval(() => {
         updateMessages()
       }, 5000);
@@ -2055,14 +2053,16 @@ const App = () => {
                             }
                             {messagesPagi.messages.map(message=>(
                               <>
+                              {console.log("Message",message)}
                               <Message
                               message={message}
+                              profile={profileID}
                               />
                               </>
                               
                             ))}
 
-                            <textarea value={tempInput} onChange={handleInputChangeMessage}></textarea>
+                            <textarea style={{width: '100%'}} value={tempInput} onChange={handleInputChangeMessage}></textarea>
                             <ContactDetailsChatButton className="Button__Container-sc-1ltq5rw-0 hqukir" onClick={finishMessage}>
                                 <ContactDetailsChatSvg
                                   viewBox="0 0 20 20"
